@@ -1,0 +1,21 @@
+remove_action( 'wp_new_user_notification_email', 'action_user_register', 10, 1 ); 
+
+
+add_filter( 'wp_new_user_notification_email', 'custom_wp_new_user_notification_email', 10, 3 );
+
+function custom_wp_new_user_notification_email( $wp_new_user_notification_email, $user, $blogname ) {
+    $key = get_password_reset_key( $user );
+    $message = sprintf(__('Bienvenidos al curso Humanitas de la Armada - USS - Red Cultural, instancia para profundizar en humanidades y desarrollar pensamiento crítico.')) . "\r\n\r\n";
+    $message .= "Cada semana te llegará el acceso a las clases presenciales via zoom por mail y luego las clases quedarán disponibles en la plataforma virtual que ahora te presentamos." . "\r\n\r\n";
+    $message .= '<br><br>Para acceder a tu cuenta te invitamos  a <strong>cambiar tu contraseña</strong> en este link:' . "\r\n\r\n";
+    $message .= "<a href=" . network_site_url("wp-login.php?action=rp&key=$key&login=" . rawurlencode($user->user_login), 'login') . ">Cambiar Password</a><br><br>" ;
+    $message .= "Esta será una gran aventura formativa que te permitirá comprender la realidad desde una perspectiva profunda.<br>" . "\r\n\r\n";
+    $message .= "<br>Para aprender cómo usar el sitio ingresa a este <a href='https://red-cultural.cl/comousarcolegios/'>link</a>,<br><br>" . "\r\n";
+    $message .= "Saludos cordiales,<br>" . "\r\n";
+    $message .= "Equipo Red Cultural" . "\r\n";
+    $wp_new_user_notification_email['message'] = $message;
+
+    $wp_new_user_notification_email['headers'] = 'From: Red Cultural<pagosredcultural@gmail.com>'; // this just changes the sender name and email to whatever you want (instead of the default WordPress <wordpress@domain.ext>
+
+    return $wp_new_user_notification_email;
+}
