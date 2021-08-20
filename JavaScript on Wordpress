@@ -1,0 +1,7 @@
+function load_js_assets() {
+  if( is_page( 64 ) ) {
+      wp_enqueue_script('nico.js', 'http://redcultural.local/wp-content', array('jquery'), '', false);
+  } 
+}
+
+add_action('wp_enqueue_scripts', 'load_js_assets');
